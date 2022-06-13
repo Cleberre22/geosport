@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ChampionshipRepository;
+use App\Repository\ClubRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ChampionshipRepository::class)]
-class Championship
+#[ORM\Entity(repositoryClass: ClubRepository::class)]
+class Club
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,11 +18,17 @@ class Championship
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $image;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $numberTeam;
+    #[ORM\Column(type: 'text')]
+    private $description;
+
+    #[ORM\Column(type: 'float')]
+    private $latitude;
+
+    #[ORM\Column(type: 'float')]
+    private $longitude;
 
     #[ORM\Column(type: 'boolean')]
     private $active;
@@ -31,21 +37,21 @@ class Championship
     private $updatedAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;
+    private $CreatedAt;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'championships')]
+    #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'clubs')]
+    private $sport;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'clubs')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    #[ORM\ManyToOne(targetEntity: Sport::class, inversedBy: 'championships')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $sport;
-
-    #[ORM\OneToMany(mappedBy: 'championship', targetEntity: Team::class)]
+    #[ORM\OneToMany(mappedBy: 'club', targetEntity: Team::class)]
     private $teams;
 
     public function __construct()
     {
+        $this->sport = new ArrayCollection();
         $this->teams = new ArrayCollection();
     }
 
@@ -71,21 +77,45 @@ class Championship
         return $this->image;
     }
 
-    public function setImage(?string $image): self
+    public function setImage(string $image): self
     {
         $this->image = $image;
 
         return $this;
     }
 
-    public function getNumberTeam(): ?int
+    public function getDescription(): ?string
     {
-        return $this->numberTeam;
+        return $this->description;
     }
 
-    public function setNumberTeam(?int $numberTeam): self
+    public function setDescription(string $description): self
     {
-        $this->numberTeam = $numberTeam;
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(float $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(float $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }
@@ -116,24 +146,36 @@ class Championship
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->CreatedAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
     {
-        $this->createdAt = $createdAt;
+        $this->CreatedAt = $CreatedAt;
 
         return $this;
     }
 
-    public function getSport(): ?Sport
+    /**
+     * @return Collection<int, Sport>
+     */
+    public function getSport(): Collection
     {
         return $this->sport;
     }
 
-    public function setSport(?Sport $sport): self
+    public function addSport(Sport $sport): self
     {
-        $this->sport = $sport;
+        if (!$this->sport->contains($sport)) {
+            $this->sport[] = $sport;
+        }
+
+        return $this;
+    }
+
+    public function removeSport(Sport $sport): self
+    {
+        $this->sport->removeElement($sport);
 
         return $this;
     }
@@ -162,7 +204,7 @@ class Championship
     {
         if (!$this->teams->contains($team)) {
             $this->teams[] = $team;
-            $team->setChampionship($this);
+            $team->setClub($this);
         }
 
         return $this;
@@ -172,8 +214,8 @@ class Championship
     {
         if ($this->teams->removeElement($team)) {
             // set the owning side to null (unless already changed)
-            if ($team->getChampionship() === $this) {
-                $team->setChampionship(null);
+            if ($team->getClub() === $this) {
+                $team->setClub(null);
             }
         }
 

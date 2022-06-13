@@ -30,11 +30,19 @@ class Sport
     #[ORM\Column(type: 'string', length: 255)]
     private $image;
 
+    #[ORM\ManyToMany(targetEntity: Club::class, mappedBy: 'sport')]
+    private $clubs;
+
     #[ORM\OneToMany(mappedBy: 'sport', targetEntity: Championship::class)]
     private $championships;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sports')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
     public function __construct()
     {
+        $this->clubs = new ArrayCollection();
         $this->championships = new ArrayCollection();
     }
 
@@ -104,6 +112,33 @@ class Sport
     }
 
     /**
+     * @return Collection<int, Club>
+     */
+    public function getClubs(): Collection
+    {
+        return $this->clubs;
+    }
+
+    public function addClub(Club $club): self
+    {
+        if (!$this->clubs->contains($club)) {
+            $this->clubs[] = $club;
+            $club->addSport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClub(Club $club): self
+    {
+        if ($this->clubs->removeElement($club)) {
+            $club->removeSport($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, Championship>
      */
     public function getChampionships(): Collection
@@ -129,6 +164,18 @@ class Sport
                 $championship->setSport(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
