@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SportRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SportRepository::class)]
@@ -24,6 +26,17 @@ class Sport
 
     #[ORM\Column(type: 'datetime_immutable')]
     private $CreatedAt;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $image;
+
+    #[ORM\OneToMany(mappedBy: 'sport', targetEntity: Championship::class)]
+    private $championships;
+
+    public function __construct()
+    {
+        $this->championships = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +87,48 @@ class Sport
     public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
     {
         $this->CreatedAt = $CreatedAt;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Championship>
+     */
+    public function getChampionships(): Collection
+    {
+        return $this->championships;
+    }
+
+    public function addChampionship(Championship $championship): self
+    {
+        if (!$this->championships->contains($championship)) {
+            $this->championships[] = $championship;
+            $championship->setSport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChampionship(Championship $championship): self
+    {
+        if ($this->championships->removeElement($championship)) {
+            // set the owning side to null (unless already changed)
+            if ($championship->getSport() === $this) {
+                $championship->setSport(null);
+            }
+        }
 
         return $this;
     }
