@@ -96,30 +96,5 @@
 
 			</footer>
 		</div>
-
-
-        <!-- Leaflet JS -->
-		<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
-	    <script>
-			var map = L.map('map').setView([46.63163379546362, 2.1793572050954895],5);
-		        L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-					minZoom: 1,
-					maxZoom: 20,
-					attribution: '© OpenStreetMap'
-		        }).addTo(map);
-
-
-		{% for club in club %}
-			var myIcon = L.icon({
-   				iconUrl: "{{ asset('upload/images/club/' ~ club.image) }}",
-    			iconSize: [30, 35],
-   				
-    			
-			});
-
-			L.marker([{{ club.latitude }}, {{ club.longitude }}], {icon: myIcon}).addTo(map);
-		{% endfor %}
-		
-		</script>
 </body>
 </html>
