@@ -25,21 +25,31 @@ class StadiumCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('name', 'Nom'),
-            BooleanField::new('active', 'Activer'),
+            AssociationField::new('club', 'club'),
             NumberField::new('capacity', 'Capacité'),
             TextareaField::new('description', 'Description'),
+            BooleanField::new('active', 'Activer'),
             DateTimeField::new('updatedAt')->hideOnForm(),
             DatetimeField::new('createdAt')->hideOnForm(),
-            AssociationField::new('user', 'Utilisateur'),                                 
+            TextField::new('user', 'Utilisateur')->onlyOnIndex(),                                
         ];
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         // if ($entityInstance instanceof Sport) return;
-
+        $entityInstance->setUser($this->getUser());
         $entityInstance->setCreatedAt(new \DateTimeImmutable);
 
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Stadium) return;
+
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable);
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }

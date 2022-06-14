@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Doctrine\ORM\QueryBuilder;
 use App\Entity\Championship;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -30,18 +31,29 @@ class ChampionshipCrudController extends AbstractCrudController
             IntegerField::new('numberTeam', 'Nombre d\'équipes'),
             DateTimeField::new('updatedAt')->hideOnForm(),
             DatetimeField::new('createdAt')->hideOnForm(),
-            AssociationField::new('sport', 'Sport'),  
-            AssociationField::new('user', 'Utilisateur'),  
+            AssociationField::new('sport', 'Sport')->setQueryBuilder(function (QueryBuilder $queryBuilder) {
+                $queryBuilder->where('entity.active = true');
+            }),  
+            TextField::new('user', 'Utilisateur')->onlyOnIndex(),  
         ];
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         // if ($entityInstance instanceof Championship) return;
-
+        $entityInstance->setUser($this->getUser());
         $entityInstance->setCreatedAt(new \DateTimeImmutable);
 
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Championship) return;
+
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable);
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
    
 }

@@ -35,6 +35,9 @@ class Stadium
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
+    #[ORM\ManyToOne(targetEntity: Club::class, inversedBy: 'stadia')]
+    private $club;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -127,5 +130,17 @@ class Stadium
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getClub(): ?Club
+    {
+        return $this->club;
+    }
+
+    public function setClub(?Club $club): self
+    {
+        $this->club = $club;
+
+        return $this;
     }
 }

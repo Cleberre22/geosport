@@ -49,10 +49,14 @@ class Club
     #[ORM\OneToMany(mappedBy: 'club', targetEntity: Team::class)]
     private $teams;
 
+    #[ORM\OneToMany(mappedBy: 'club', targetEntity: Stadium::class)]
+    private $stadia;
+
     public function __construct()
     {
         $this->sport = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->stadia = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -225,5 +229,35 @@ class Club
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Stadium>
+     */
+    public function getStadia(): Collection
+    {
+        return $this->stadia;
+    }
+
+    public function addStadium(Stadium $stadium): self
+    {
+        if (!$this->stadia->contains($stadium)) {
+            $this->stadia[] = $stadium;
+            $stadium->setClub($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStadium(Stadium $stadium): self
+    {
+        if ($this->stadia->removeElement($stadium)) {
+            // set the owning side to null (unless already changed)
+            if ($stadium->getClub() === $this) {
+                $stadium->setClub(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -35,16 +35,25 @@ class SportCrudController extends AbstractCrudController
             ImageField::new('image', 'Image')->setBasePath(self::SPORT_BASE_PATH)
                                              ->setUploadDir(self::SPORT_UPLOAD_DIR)
                                              ->setSortable(false),
-            AssociationField::new('user', 'Utilisateur'),                                 
+            TextField::new('user', 'Utilisateur')->onlyOnIndex(),                                 
         ];
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         // if ($entityInstance instanceof Sport) return;
-
+        $entityInstance->setUser($this->getUser());
         $entityInstance->setCreatedAt(new \DateTimeImmutable);
 
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        // if (!$entityInstance instanceof Sport) return;
+
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable);
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }

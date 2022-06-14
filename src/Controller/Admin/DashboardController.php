@@ -77,6 +77,12 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Ajouter un stade', 'fas fa-plus', Stadium::class)->setAction(Crud::PAGE_NEW),
             MenuItem::linkToCrud('Voir les stades', 'fas fa-eye', Stadium::class)
         ]);
+
+        yield MenuItem::section('Navigation');
+        yield MenuItem::subMenu('', 'fas fa-bars')->setSubItems([
+             MenuItem::linktoRoute('Home', 'fa fa-home', 'home')
+        ]);
+        
        
     }
 }

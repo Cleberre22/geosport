@@ -29,25 +29,35 @@ class ClubCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('name', 'Nom'),
-            BooleanField::new('active', 'Activer'),
+            AssociationField::new('sport'), 
             TextareaField::new('description', 'Description'),
-            NumberField::new('latitude', 'Latitude'),
-            NumberField::new('longitude', 'Longitude'),
-            DateTimeField::new('updatedAt')->hideOnForm(),
-            DatetimeField::new('createdAt')->hideOnForm(),
             ImageField::new('image', 'Image')->setBasePath(self::CLUB_BASE_PATH)
                                              ->setUploadDir(self::CLUB_UPLOAD_DIR)
                                              ->setSortable(false),
-            AssociationField::new('user', 'Utilisateur'),                                 
+            NumberField::new('latitude', 'Latitude'),
+            NumberField::new('longitude', 'Longitude'),
+            BooleanField::new('active', 'Activer'),    
+            DateTimeField::new('updatedAt')->hideOnForm(),
+            DatetimeField::new('createdAt')->hideOnForm(),                         
+            TextField::new('user', 'Utilisateur')->onlyOnIndex(),                                 
         ];
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         // if ($entityInstance instanceof Sport) return;
-
+        $entityInstance->setUser($this->getUser());
         $entityInstance->setCreatedAt(new \DateTimeImmutable);
 
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Club) return;
+
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable);
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }
