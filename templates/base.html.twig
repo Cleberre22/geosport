@@ -107,10 +107,19 @@
 					maxZoom: 20,
 					attribution: '© OpenStreetMap'
 		        }).addTo(map);
-		{% for club in club %}	
-			var marker = L.marker([{{ club.latitude }}, {{ club.longitude }}]).addTo(map);
-		{% endfor %}	
+
+
+		{% for club in club %}
+			var myIcon = L.icon({
+   				iconUrl: "{{ asset('upload/images/club/' ~ club.image) }}",
+    			iconSize: [30, 35],
+   				
+    			
+			});
+
+			L.marker([{{ club.latitude }}, {{ club.longitude }}], {icon: myIcon}).addTo(map);
+		{% endfor %}
+		
 		</script>
 </body>
 </html>
-L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
