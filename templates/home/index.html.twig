@@ -52,7 +52,7 @@
 
           map.on('click', onMapClick);
 			        L.marker([{{ club.latitude }}, {{ club.longitude }}], {icon: myIcon})
-              .bindPopup('<a href="{{ path('club_show', { id: club.id }) }}">{{ club.name }}</a>')
+              .bindPopup('<a href="#">{{ club.name }}</a>')
               .addTo(map);
 		{% endfor %}
 		</script>
