@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ClubController!
+{% endblock %}
+
+{% block body %}
+
+
+	<div class="card p-3 mb-3" style="width: 16rem;">
+		<img class="card-img-top mt-3" src="{{ asset('upload/images/club/' ~ club.image) }}" alt="Card image cap">
+		<div class="card-body">
+			<h5 class="card-title text-center mt-3">{{club.name}}</h5>
+		</div>
+	</div>
+
+
+{% endblock %}

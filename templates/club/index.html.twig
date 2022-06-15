@@ -19,7 +19,7 @@
 						<div class="row">
 							{% for club in club %}
 								<div class="col-lg-4">
-								<a href="#">
+								<a href="{{ path('club_show', { id: club.id }) }}">
 										<div class="card p-3 mb-3" style="width: 16rem;">
 											<img class="card-img-top mt-3" src="{{ asset('upload/images/club/' ~ club.image) }}" alt="Card image cap">
 											<div class="card-body">
