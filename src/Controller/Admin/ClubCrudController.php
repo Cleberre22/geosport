@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
@@ -30,6 +31,7 @@ class ClubCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('name', 'Nom'),
             AssociationField::new('sport'), 
+            CountryField::new('country', 'Pays'),
             TextareaField::new('description', 'Description'),
             ImageField::new('image', 'Image')->setBasePath(self::CLUB_BASE_PATH)
                                              ->setUploadDir(self::CLUB_UPLOAD_DIR)

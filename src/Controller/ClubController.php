@@ -19,7 +19,7 @@ class ClubController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'club_show', methods: ['GET'])]
+    #[Route('club/{id}', name: 'club_show', methods: ['GET'])]
     public function show(Club $club): Response
     {
         return $this->render('club/show.html.twig', [
