@@ -42,31 +42,4 @@ class SportRepository extends ServiceEntityRepository
         }
     }
 
-    
-    // /**
-    //  * Récupère les sports en lien avec une recherche
-    //  * @return Sport[]
-    //  */
-    // public function findSearch(SearchData $search): array
-    // {
-    //     $query = $this
-    //         ->createQueryBuilder('c')
-    //         ->select('club')
-    //         ->join('c.sports', 's');
-
-    //         if (!empty($search->q)) {
-    //             $query = $query
-    //                 ->andWhere('sport.name LIKE :q')
-    //                 ->setParameter('q', "%{$search->q}%");
-    //         }
-
-    //         if (!empty($search->sport)) {
-    //             $query = $query
-    //                 ->andWhere('s.id IN (:sport)')
-    //                 ->setParameter('sport', $search->sport);
-    //         }
-
-    //     return $query->getQuery()->getResult();
-    // }
-
 }
