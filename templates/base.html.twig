@@ -16,7 +16,18 @@
 		<link
 		rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
 		<!-- Make sure you put this AFTER Leaflet's CSS -->
-		
+		<style>
+			.grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				grid-gap: 20px;
+			}
+			.filter {
+				display: block;
+				position: sticky;
+				top: 20px;
+			}
+		</style>
 	</head>
 	<body>
 		<header>

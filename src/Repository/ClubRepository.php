@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Club;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Data\SearchData;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Club>
@@ -39,28 +40,33 @@ class ClubRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Club[] Returns an array of Club objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Club
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Récupère les sports en lien avec une recherche
+     * @return Club[]
+     */
+    public function findSearch(SearchData $search): array
+    {
+        $query = $this
+            ->createQueryBuilder('c')
+            ->select('c', 's')
+            ->join('c.sport', 's');
+            // dd($query->getQuery()->getResult());
+
+            if (!empty($search->q)) {
+               
+                $query = $query
+                    ->andWhere('s.name LIKE :q')
+                    ->setParameter('q', "%{$search->q}%");
+            }
+
+            if (!empty($search->sport)) {
+                $query = $query
+                    ->andWhere('s.id IN (:sport)')
+                    ->setParameter('sport', $search->sport);
+            }
+            // dd($query->getQuery()->getResult()) ;
+        return $query->getQuery()->getResult();
+    }
+  
 }

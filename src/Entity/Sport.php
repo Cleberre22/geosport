@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\SportRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Club;
+use App\Entity\User;
+use App\Entity\Championship;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SportRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: SportRepository::class)]
 class Sport

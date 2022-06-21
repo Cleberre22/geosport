@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+
+use App\Entity\Club;
 use App\Entity\Sport;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Data\SearchData;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Sport>
@@ -39,28 +42,31 @@ class SportRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Sport[] Returns an array of Sport objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    
+    // /**
+    //  * Récupère les sports en lien avec une recherche
+    //  * @return Sport[]
+    //  */
+    // public function findSearch(SearchData $search): array
+    // {
+    //     $query = $this
+    //         ->createQueryBuilder('c')
+    //         ->select('club')
+    //         ->join('c.sports', 's');
 
-//    public function findOneBySomeField($value): ?Sport
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //         if (!empty($search->q)) {
+    //             $query = $query
+    //                 ->andWhere('sport.name LIKE :q')
+    //                 ->setParameter('q', "%{$search->q}%");
+    //         }
+
+    //         if (!empty($search->sport)) {
+    //             $query = $query
+    //                 ->andWhere('s.id IN (:sport)')
+    //                 ->setParameter('sport', $search->sport);
+    //         }
+
+    //     return $query->getQuery()->getResult();
+    // }
+
 }
