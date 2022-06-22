@@ -8,6 +8,17 @@
 
 
 		<section class="py-5 text-center container">
+		{% for country in country %}
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="exampleRadios" id="countryMap" value="option1" checked>
+				<label class="form-check-label" for="exampleRadios1">
+				{{country.name}}
+				</label>
+			</div>
+		{% endfor %}
+		
+		
+			
 			<div class="row justify-content-center py-lg-3">
 				<div id="map"></div>
 			</div>
@@ -36,7 +47,7 @@ popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toStri
 map.on('click', onMapClick);
 L.marker([
 {{ club.latitude }}, {{ club.longitude }}
-], {icon: myIcon}).bindPopup('<a href="          {{ club.website }}">          {{ club.name }}</a>').addTo(map);{% endfor %}
+], {icon: myIcon}).bindPopup('<a href="           {{ club.website }}">           {{ club.name }}</a>').addTo(map);{% endfor %}
 		</script>
 
 		<div class="album py-3">
@@ -67,9 +78,9 @@ L.marker([
 											{% for sport in club.sport %}
 												<em class="text-muted text-primary text-italic">#{{sport.name}}</em>
 											{% endfor %}
-									
-												<em class="text-muted text-primary text-italic">#{{club.country}}</em>
-										
+
+											<em class="text-muted text-primary text-italic">#{{club.country}}</em>
+
 										</div>
 									</a>
 								{% endfor %}
@@ -337,5 +348,5 @@ L.marker([
 
 
 			{% block javascripts %}
-				<script type="module" src="{{ asset('js/app.js') }}"></script>
+				<script src="{{ asset('js/countryMap.js') }}"></script>
 			{% endblock %}
