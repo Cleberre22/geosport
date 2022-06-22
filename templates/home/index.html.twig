@@ -8,16 +8,6 @@
 
 
 		<section class="py-5 text-center container">
-			<div class="row py-lg-5">
-				<div class="col-lg-6 col-md-8 mx-auto">
-					<h1 class="fw-light">Album example</h1>
-					<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-					<p>
-						<a href="#" class="btn btn-primary my-2">Main call to action</a>
-						<a href="#" class="btn btn-secondary my-2">Secondary action</a>
-					</p>
-				</div>
-			</div>
 			<div class="row justify-content-center py-lg-3">
 				<div id="map"></div>
 			</div>
@@ -46,23 +36,29 @@ popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toStri
 map.on('click', onMapClick);
 L.marker([
 {{ club.latitude }}, {{ club.longitude }}
-], {icon: myIcon}).bindPopup('<a href="         {{ path('club_show', { id: club.id }) }}">         {{ club.name }}</a>').addTo(map);{% endfor %}
+], {icon: myIcon}).bindPopup('<a href="          {{ club.website }}">          {{ club.name }}</a>').addTo(map);{% endfor %}
 		</script>
 
-		<div class="album py-5 bg-light">
-			<div
-				class="container">
+		<div class="album py-3">
+			<div class="container">
 
 				<div class="container js-filter">
+					<div class="col-lg-12">
+						<h3 class="pb-4 mb-4 fst-italic border-bottom">Votre recherche:</h3>
+					</div>
 					<div class="row">
-						<div class="col-md-3 filter">
+
+						<div class="col-md-3 js-filter-form">
 							{% include 'sport/_filter.html.twig' with {form: form} only %}
 						</div>
-						<div class="col-md-9">
-							<div class="grid">
 
+
+						<div class="col-md-9">
+
+							<div class="grid js-filter-content">
 								{% for club in club %}
-									<a href="{{ path('club_show', { id: club.id }) }}">
+									{# <a href="{{ path('club_show', { id: club.id }) }}"> #}
+									<a href="{{club.website}}">
 										<div class="card p-3 mb-3" style="width: 16rem;">
 											<img class="card-img-top mt-3" src="{{ asset('upload/images/club/' ~ club.image) }}" alt="Card image cap">
 											<div class="card-body">
@@ -71,11 +67,14 @@ L.marker([
 											{% for sport in club.sport %}
 												<em class="text-muted text-primary text-italic">#{{sport.name}}</em>
 											{% endfor %}
+									
+												<em class="text-muted text-primary text-italic">#{{club.country}}</em>
+										
 										</div>
 									</a>
 								{% endfor %}
-
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -338,5 +337,5 @@ L.marker([
 
 
 			{% block javascripts %}
-				<script src="{{ asset('js/selectSport.js') }}"></script>
+				<script type="module" src="{{ asset('js/app.js') }}"></script>
 			{% endblock %}

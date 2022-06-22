@@ -1,10 +1,14 @@
-{{ form_start(form, {attr: {class: 'filter'}}) }}
+{{ form_start(form, {attr: {class: 'filter js-filter-form'}}) }}
     {{ form_row(form.q) }}
 
     <h4>Sport:</h4>
         {{ form_row(form.sport) }}
 
+    <h4>Club:</h4>
+        {{ form_row(form.club) }}
+
     <h4>Pays:</h4>
+        {{ form_row(form.country) }}
 
     <button type="submit" class="btn btn-primary w-100">Filtrer</button>
         

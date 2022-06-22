@@ -15,4 +15,15 @@ class SearchData
      */
     public $sport =[];
 
+     /**
+     * @var Club[]
+     *
+     */
+    public $club =[];
+
+       /**
+     * @var Country[]
+     *
+     */
+    public $country =[];
 }

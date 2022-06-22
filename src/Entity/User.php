@@ -63,6 +63,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Country::class)]
+    private $countries;
+
     public function __construct()
     {
         $this->clubs = new ArrayCollection();
@@ -70,6 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sports = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->stadia = new ArrayCollection();
+        $this->countries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -341,6 +345,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Country>
+     */
+    public function getCountries(): Collection
+    {
+        return $this->countries;
+    }
+
+    public function addCountry(Country $country): self
+    {
+        if (!$this->countries->contains($country)) {
+            $this->countries[] = $country;
+            $country->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        if ($this->countries->removeElement($country)) {
+            // set the owning side to null (unless already changed)
+            if ($country->getUser() === $this) {
+                $country->setUser(null);
+            }
+        }
 
         return $this;
     }

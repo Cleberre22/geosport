@@ -49,8 +49,9 @@ class ClubRepository extends ServiceEntityRepository
     {
         $query = $this
             ->createQueryBuilder('c')
-            ->select('c', 's')
-            ->join('c.sport', 's');
+            ->select('c', 's', 'cn')
+            ->join('c.sport', 's')
+            ->join('c.country', 'cn');
             // dd($query->getQuery()->getResult());
 
             if (!empty($search->q)) {
@@ -64,6 +65,19 @@ class ClubRepository extends ServiceEntityRepository
                 $query = $query
                     ->andWhere('s.id IN (:sport)')
                     ->setParameter('sport', $search->sport);
+            }
+
+            if (!empty($search->club)) {
+                $query = $query
+                    ->andWhere('c.id IN (:club)')
+                    ->setParameter('club', $search->club);
+            }
+
+            if (!empty($search->country)) {
+                $query = $query
+                    ->andWhere('cn.id IN (:country)')
+                    ->setParameter('country', $search->country);
+                
             }
             // dd($query->getQuery()->getResult()) ;
         return $query->getQuery()->getResult();

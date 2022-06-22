@@ -2,41 +2,34 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Club;
+use App\Entity\Country;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
-class ClubCrudController extends AbstractCrudController
+class CountryCrudController extends AbstractCrudController
 {
-    public const CLUB_BASE_PATH = 'upload/images/club';
-    public const CLUB_UPLOAD_DIR = 'public/upload/images/club';
+    public const COUNTRY_BASE_PATH = 'upload/images/country';
+    public const COUNTRY_UPLOAD_DIR = 'public/upload/images/country';
 
     public static function getEntityFqcn(): string
     {
-        return Club::class;
+        return Country::class;
     }
 
     public function configureFields(string $pageName): iterable
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextField::new('name', 'Nom'),
-            AssociationField::new('country', 'Pays'),
-            AssociationField::new('sport'), 
-            TextareaField::new('description', 'Description'),
-            ImageField::new('image', 'Image')->setBasePath(self::CLUB_BASE_PATH)
-                                             ->setUploadDir(self::CLUB_UPLOAD_DIR)
-                                             ->setSortable(false),
-            UrlField::new('website', 'Site internet'),                                 
+            TextField::new('name', 'Nom'), 
+            ImageField::new('image', 'Image')->setBasePath(self::COUNTRY_BASE_PATH)
+                                             ->setUploadDir(self::COUNTRY_UPLOAD_DIR)
+                                             ->setSortable(false),                                 
             NumberField::new('latitude', 'Latitude'),
             NumberField::new('longitude', 'Longitude'),
             BooleanField::new('active', 'Activer'),    
@@ -48,7 +41,7 @@ class ClubCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        // if ($entityInstance instanceof Sport) return;
+        // if ($entityInstance instanceof Country) return;
         $entityInstance->setUser($this->getUser());
         $entityInstance->setCreatedAt(new \DateTimeImmutable);
 
@@ -57,7 +50,7 @@ class ClubCrudController extends AbstractCrudController
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if (!$entityInstance instanceof Club) return;
+        if (!$entityInstance instanceof Country) return;
 
         $entityInstance->setUpdatedAt(new \DateTimeImmutable);
 

@@ -6,9 +6,10 @@ use App\Entity\Club;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\Sport;
+use App\Entity\Country;
+use App\Entity\Stadium;
 use App\Entity\Championship;
 use App\Controller\Admin\UserCrudController;
-use App\Entity\Stadium;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -76,6 +77,12 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('', 'fas fa-bars')->setSubItems([
             MenuItem::linkToCrud('Ajouter un stade', 'fas fa-plus', Stadium::class)->setAction(Crud::PAGE_NEW),
             MenuItem::linkToCrud('Voir les stades', 'fas fa-eye', Stadium::class)
+        ]);
+
+        yield MenuItem::section('Pays');
+        yield MenuItem::subMenu('', 'fas fa-bars')->setSubItems([
+            MenuItem::linkToCrud('Ajouter un pays', 'fas fa-plus', Country::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Voir les pays', 'fas fa-eye', Country::class)
         ]);
 
         yield MenuItem::section('Navigation');

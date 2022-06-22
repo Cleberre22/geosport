@@ -2,13 +2,16 @@
 
 namespace App\Form;
 
+use App\Entity\Club;
 use App\Entity\Sport;
 use App\Data\SearchData;
+use App\Entity\Country;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SearchForm extends AbstractType
 {
@@ -26,6 +29,20 @@ class SearchForm extends AbstractType
                 'label' => false,
                 'required' => false,
                 'class' => Sport::class,
+                'expanded' => true,
+                'multiple' => true
+            ])
+            ->add('club', EntityType::class, [
+                'label' => false,
+                'required' => false,
+                'class' => Club::class,
+                'expanded' => true,
+                'multiple' => true
+            ])
+            ->add('country', EntityType::class, [
+                'label' => false,
+                'required' => false,
+                'class' => Country::class,
                 'expanded' => true,
                 'multiple' => true
             ])
